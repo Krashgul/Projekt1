@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Life Total</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<style>
+  * {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    user-select: none;
+    text-decoration: none;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  .bgcG {
+    background-color: rgb(121, 165, 38);
+  }
+
+  .bgcR {
+    background-color: rgb(165, 38, 38);
+  }
+
+  .bgcU {
+    background-color: rgb(38, 104, 165);
+  }
+
+  .bgcY {
+    background-color: rgb(165, 157, 38);
+  }
+
+  .bgcB {
+    background-color: rgb(0, 0, 0);
+  }
+
+  .bgcExp {
+    background-image: url(https://gamepedia.cursecdn.com/mtgsalvation_gamepedia/e/e2/Loyalty.svg?version=8ef2546592f4abd0c002ac0688bc22ea);
+    background-position: 50% 45%;
+    background-size: 150%;
+    background-repeat: no-repeat;
+
+
+
+  }
+
+  body {
+    width: 100%;
+    height: 100vh;
+    font-size: calc(10px + 15vh);
+    padding: 8px;
+    background-color: rgb(0, 0, 0);
+    color: #fff;
+    text-align: center;
+  }
+
+  .box {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-gap: 8px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+
+  button {
+    border: 0;
+    font-size: calc(6px + 9vh);
+    color: #fff;
+
+  }
+
+  button.exp {
+    font-size: calc(6px + 18vh);
+  }
+
+  nav {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    position: fixed;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-gap: 8px;
+    z-index: 10;
+    background-color: #000;
+    transition: 0.5s linear;
+    overflow: hidden;
+  }
+
+  .exp1 {
+    grid-column: 1/2;
+    grid-row: 1/2;
+  }
+
+  .exp2 {
+    grid-column: 4/5;
+    grid-row: 1/2;
+  }
+
+  .exp3 {
+    grid-column: 1/2;
+    grid-row: 4/5;
+  }
+
+  .exp4 {
+    grid-column: 4/5;
+    grid-row: 4/5;
+  }
+
+  .P1vsP2 {
+    grid-column: 2/3;
+    grid-row: 1/2;
+  }
+
+  .P1vsP3 {
+    grid-column: 1/2;
+    grid-row: 2/3;
+  }
+
+  .P1vsP4 {
+    grid-column: 2/3;
+    grid-row: 2/3;
+  }
+
+  .P2vsP1 {
+    grid-column: 3/4;
+    grid-row: 1/2;
+  }
+
+  .P2vsP3 {
+    grid-column: 3/4;
+    grid-row: 2/3;
+  }
+
+  .P2vsP4 {
+    grid-column: 4/5;
+    grid-row: 2/3;
+  }
+
+  .P1vsP4 {
+    grid-column: 2/3;
+    grid-row: 2/3;
+  }
+
+  .P3vsP1 {
+    grid-column: 1/2;
+    grid-row: 3/4;
+  }
+
+  .P3vsP2 {
+    grid-column: 2/3;
+    grid-row: 3/4;
+  }
+
+  .P3vsP4 {
+    grid-column: 2/3;
+    grid-row: 4/5;
+  }
+
+  .P4vsP1 {
+    grid-column: 3/4;
+    grid-row: 3/4;
+  }
+
+  .P4vsP2 {
+    grid-column: 4/5;
+    grid-row: 3/4;
+  }
+
+  .P4vsP3 {
+    grid-column: 3/4;
+    grid-row: 4/5;
+  }
+
+  nav.on {
+    display: none;
+  }
+
+  .player1 {
+    display: grid;
+    grid-column: 1/2;
+    grid-row: 1/2;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+
+  .player2 {
+    display: grid;
+    grid-column: 2/3;
+    grid-row: 1/2;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+
+  .player3 {
+    display: grid;
+    grid-column: 1/2;
+    grid-row: 2/3;
+
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+
+  .player4 {
+    display: grid;
+    grid-column: 2/3;
+    grid-row: 2/3;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+
+  .itemCenter {
+    display: grid;
+    grid-column: 1/3;
+    grid-row: 1/2;
+  }
+
+
+  .burger {
+    position: fixed;
+    overflow: visible;
+    z-index: 20;
+    top: calc(50% - 5px - 4vh);
+    right: calc(50% - 8px - 4vh);
+    height: calc(10px + 8vh);
+    width: calc(16px + 8vh);
+    transition: .2s;
+  }
+
+  .burger.on {
+    transform: rotate(-90deg);
+  }
+
+  .burger span {
+    position: absolute;
+    width: 100%;
+    height: 20%;
+    background-color: rgb(255, 255, 255);
+    left: 0;
+    transition: top .2s .2s, bottom .2s .2s, opacity .2s .2s, transform .2s .4s;
+  }
+
+  .burger span:nth-child(1) {
+    top: 0;
+    border-radius: 10px;
+  }
+
+  .burger.on span:nth-child(1) {
+    top: 40%;
+    transform: rotate(45deg);
+    border-radius: 10px;
+  }
+
+  .burger span:nth-child(2) {
+    top: 40%;
+    border-radius: 10px;
+  }
+
+  .burger.on span:nth-child(2) {
+    transform: rotate(135deg);
+    border-radius: 10px;
+  }
+
+  .burger span:nth-child(3) {
+    bottom: 0;
+    border-radius: 10px;
+  }
+
+  .burger.on span:nth-child(3) {
+    bottom: 40%;
+    transform: rotate(45deg);
+    border-radius: 10px;
+  }
+
+  @media (orientation: landscape) {
+    body {
+      font-size: calc(5px + 11vw);
+
+    }
+
+    button {
+      font-size: calc(3px + 8.5vw);
+    }
+
+    button.exp {
+      font-size: calc(5px + 5vw);
+    }
+
+    .bgcExp {
+      background-position: 50% 53%;
+      background-size: 90%;
+    }
+
+    .burger {
+      top: calc(50% - 5px - 4vw);
+      right: calc(50% - 8px - 4vw);
+      height: calc(10px + 8vw);
+      width: calc(16px + 8vw);
+    }
+
+
+  }
+
+</style>
+
+<body>
+  <div class="burger">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <nav class="on">
+    <button class="bgcG bgcExp exp1"></button>
+    <button class="bgcG P1vsP2 bgcG">→</button>
+    <button class="bgcG P1vsP3">↓</button>
+    <button class="bgcG P1vsP4">↘</button>
+    <button class="bgcR bgcExp exp2"></button>
+    <button class="bgcR P2vsP1">←</button>
+    <button class="bgcR P2vsP3">↙</button>
+    <button class="bgcR P2vsP4">↓</button>
+    <button class="bgcY bgcExp exp3"></button>
+    <button class="bgcY P3vsP1">↑</button>
+    <button class="bgcY P3vsP2">↗</button>
+    <button class="bgcY P3vsP4">→</button>
+    <button class="bgcU bgcExp exp4"></button>
+    <button class="bgcU P4vsP1">↖</button>
+    <button class="bgcU P4vsP2">↑</button>
+    <button class="bgcU P4vsP3">←</button>
+
+  </nav>
+  <div class="box">
+    <div class="player1">
+      <span Class="bgcG LTP1 itemCenter">40</span>
+      <button class="bgcG LTP1 plus1">+1</button>
+      <button class="bgcG LTP1 min1">-1</button>
+
+    </div>
+    <div class="player2">
+      <span Class="bgcR LTP2 itemCenter">40</span>
+      <button class="bgcR LTP2 plus1">+1</button>
+      <button class="bgcR LTP2 min1">-1</button>
+    </div>
+    <div class="player3">
+      <span Class="bgcY LTP3 itemCenter">40</span>
+      <button class="bgcY LTP3 plus1">+1</button>
+      <button class="bgcY LTP3 min1">-1</button>
+    </div>
+    <div class="player4">
+      <span Class="bgcU LTP4 itemCenter">40</span>
+      <button class="bgcU LTP4 plus1">+1</button>
+      <button class="bgcU LTP4 min1">-1</button>
+    </div>
+  </div>
+
+
+  <script>
+    // burger menu
+    const burger = document.querySelector(".burger");
+    const nav = document.querySelector("nav");
+    burger.addEventListener("click", function() {
+      burger.classList.toggle("on");
+      nav.classList.toggle("on");
+    })
+    //Life Total
+    let counter1 = 40;
+    let counter2 = 40;
+    let counter3 = 40;
+    let counter4 = 40;
+    let pcounter1 = 0;
+    let pcounter2 = 0;
+    let pcounter3 = 0;
+    let pcounter4 = 0;
+    // counter
+    let counterP1vsP2 = 0;
+    let counterP1vsP3 = 0;
+    let counterP1vsP4 = 0;
+    let counterP2vsP1 = 0;
+    let counterP2vsP3 = 0;
+    let counterP2vsP4 = 0;
+    let counterP3vsP1 = 0;
+    let counterP3vsP2 = 0;
+    let counterP3vsP4 = 0;
+    let counterP4vsP1 = 0;
+    let counterP4vsP2 = 0;
+    let counterP4vsP3 = 0;
+    // player1
+    const Life1 = document.querySelector(".LTP1");
+    const LTP1plus1 = document.querySelector(".LTP1.plus1");
+    const LTP1min1 = document.querySelector(".LTP1.min1");
+    const exp1 = document.querySelector(".exp1");
+    const CDP1vsP2 = document.querySelector(".P1vsP2");
+    const CDP1vsP3 = document.querySelector(".P1vsP3");
+    const CDP1vsP4 = document.querySelector(".P1vsP4");
+    // player2
+    const Life2 = document.querySelector(".LTP2");
+    const LTP2plus1 = document.querySelector(".LTP2.plus1");
+    const LTP2min1 = document.querySelector(".LTP2.min1");
+    const exp2 = document.querySelector(".exp2");
+    const CDP2vsP1 = document.querySelector(".P2vsP1");
+    const CDP2vsP3 = document.querySelector(".P2vsP3");
+    const CDP2vsP4 = document.querySelector(".P2vsP4");
+    // player3
+    const Life3 = document.querySelector(".LTP3");
+    const LTP3plus1 = document.querySelector(".LTP3.plus1");
+    const LTP3min1 = document.querySelector(".LTP3.min1");
+    const exp3 = document.querySelector(".exp3");
+    const CDP3vsP1 = document.querySelector(".P3vsP1");
+    const CDP3vsP2 = document.querySelector(".P3vsP2");
+    const CDP3vsP4 = document.querySelector(".P3vsP4");
+    // player4
+    const Life4 = document.querySelector(".LTP4");
+    const LTP4plus1 = document.querySelector(".LTP4.plus1");
+    const LTP4min1 = document.querySelector(".LTP4.min1");
+    const exp4 = document.querySelector(".exp4");
+    const CDP4vsP1 = document.querySelector(".P4vsP1");
+    const CDP4vsP2 = document.querySelector(".P4vsP2");
+    const CDP4vsP3 = document.querySelector(".P4vsP3");
+    // player1
+    LTP1plus1.addEventListener("click", function() {
+      counter1 = counter1 + 1;
+      Life1.textContent = counter1;
+    })
+    LTP1min1.addEventListener("click", function() {
+      counter1 = counter1 - 1;
+      Life1.textContent = counter1;
+    })
+    exp1.addEventListener("click", function() {
+      pcounter1 = pcounter1 + 1;
+      exp1.textContent = pcounter1;
+    })
+    CDP1vsP2.addEventListener("click", function() {
+      counterP1vsP2 = counterP1vsP2 + 1;
+      CDP1vsP2.textContent = counterP1vsP2;
+      counter2 = counter2 - 1;
+      Life2.textContent = counter2;
+    })
+    CDP1vsP3.addEventListener("click", function() {
+      counterP1vsP3 = counterP1vsP3 + 1;
+      CDP1vsP3.textContent = counterP1vsP3;
+      counter3 = counter3 - 1;
+      Life3.textContent = counter3;
+    })
+    CDP1vsP4.addEventListener("click", function() {
+      counterP1vsP4 = counterP1vsP4 + 1;
+      CDP1vsP4.textContent = counterP1vsP4;
+      counter4 = counter4 - 1;
+      Life4.textContent = counter4;
+    })
+    // player2
+    LTP2plus1.addEventListener("click", function() {
+      counter2 = counter2 + 1;
+      Life2.textContent = counter2;
+    })
+    LTP2min1.addEventListener("click", function() {
+      counter2 = counter2 - 1;
+      Life2.textContent = counter2;
+    })
+    exp2.addEventListener("click", function() {
+      pcounter2 = pcounter2 + 1;
+      exp2.textContent = pcounter2;
+    })
+    CDP2vsP1.addEventListener("click", function() {
+      counterP2vsP1 = counterP2vsP1 + 1;
+      CDP2vsP1.textContent = counterP2vsP1;
+      counter1 = counter1 - 1;
+      Life1.textContent = counter1;
+    })
+    CDP2vsP3.addEventListener("click", function() {
+      counterP2vsP3 = counterP2vsP3 + 1;
+      CDP2vsP3.textContent = counterP2vsP3;
+      counter3 = counter3 - 1;
+      Life3.textContent = counter3;
+    })
+    CDP2vsP4.addEventListener("click", function() {
+      counterP2vsP4 = counterP2vsP4 + 1;
+      CDP2vsP4.textContent = counterP2vsP4;
+      counter4 = counter4 - 1;
+      Life4.textContent = counter4;
+    })
+    // player3
+    LTP3plus1.addEventListener("click", function() {
+      counter3 = counter3 + 1;
+      Life3.textContent = counter3;
+    })
+    LTP3min1.addEventListener("click", function() {
+      counter3 = counter3 - 1;
+      Life3.textContent = counter3;
+    })
+    exp3.addEventListener("click", function() {
+      pcounter3 = pcounter3 + 1;
+      exp3.textContent = pcounter3;
+    })
+    CDP3vsP1.addEventListener("click", function() {
+      counterP3vsP1 = counterP3vsP1 + 1;
+      CDP3vsP1.textContent = counterP3vsP1;
+      counter1 = counter1 - 1;
+      Life1.textContent = counter1;
+    })
+    CDP3vsP2.addEventListener("click", function() {
+      counterP3vsP2 = counterP3vsP2 + 1;
+      CDP3vsP2.textContent = counterP3vsP2;
+      counter2 = counter2 - 1;
+      Life2.textContent = counter2;
+    })
+    CDP3vsP4.addEventListener("click", function() {
+      counterP3vsP4 = counterP3vsP4 + 1;
+      CDP3vsP4.textContent = counterP3vsP4;
+    })
+    // player4
+    LTP4plus1.addEventListener("click", function() {
+      counter4 = counter4 + 1;
+      Life4.textContent = counter4;
+    })
+    LTP4min1.addEventListener("click", function() {
+      counter4 = counter4 - 1;
+      Life4.textContent = counter4;
+    })
+    exp4.addEventListener("click", function() {
+      pcounter4 = pcounter4 + 1;
+      exp4.textContent = pcounter4;
+    })
+    CDP4vsP1.addEventListener("click", function() {
+      counterP4vsP1 = counterP4vsP1 + 1;
+      CDP4vsP1.textContent = counterP4vsP1;
+      counter1 = counter1 - 1;
+      Life1.textContent = counter1;
+    })
+    CDP4vsP2.addEventListener("click", function() {
+      counterP4vsP2 = counterP4vsP2 + 1;
+      CDP4vsP2.textContent = counterP4vsP2;
+      counter2 = counter2 - 1;
+      Life2.textContent = counter2;
+    })
+    CDP4vsP3.addEventListener("click", function() {
+      counterP4vsP3 = counterP4vsP3 + 1;
+      CDP4vsP3.textContent = counterP4vsP3;
+      counter3 = counter3 - 1;
+      Life3.textContent = counter3;
+    })
+
+  </script>
+
+</body>
+
+</html>
