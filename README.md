@@ -1,2 +1,2 @@
 # Projekt1
-Moje pierwsze rypozytorium
+Moje pierwsze repozytorium
